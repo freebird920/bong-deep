@@ -4,6 +4,9 @@
   - [라이브러리 `import`](#라이브러리-import)
   - [데이터 전처리](#데이터-전처리)
   - [$함수\_{구}현$](#함수_구현)
+    - [활성화 함수](#활성화-함수)
+      - [sigmoid 함수](#sigmoid-함수)
+      - [softmax 함수](#softmax-함수)
 
 ## 라이브러리 `import`
 
@@ -87,3 +90,88 @@
   ```
 
 ## $함수_{구}현$
+
+### 활성화 함수
+
+- **sigmoid**: 은닉층의 활성화 함수
+- **softmax**: 출력층의 활성화 함수
+
+#### sigmoid 함수
+
+**sigmoid** 함수 `sigmoid(z)`와 **sigmoid** 함수의 미분인 `diff_sigmoid(a)` 함수를 정의한다.
+
+- `sigmoid(z)`
+  - $e^x$은 `np.exp(x)`로 쓴다.
+  - **오버플로우 방지**: 컴퓨터가 계산할 수 있는 숫자의 크기에는 한계가 있는데, 64비트 부동소숫점 기준으로 $e^{709}$ 이상의 숫자에서 **overflow**가 발생함. 그래서 아래와 같이 $-z > 709$인 경우 **overflow**를 방지하기 위해서 $e^-z$의 최댓값을 $e^{709}$로 제한한다.
+    - `exp_arg = -1.0 * np.asarray(z)` `exp_arg`는 $-z$가 된다.
+    - `clipped_exp_arg = np.minimum(exp_arg, 709.0)`는 $-z > 709$일 때 $-z = 709$
+  - `def`
+
+  ```python
+  def sigmoid(z):
+      exp_arg = -1.0 * np.asarray(z)
+      clipped_exp_arg = np.minimum(exp_arg, 709.0)
+      return 1.0 / (1.0 + np.exp(clipped_exp_arg))
+  ```
+
+- `diff_sigmoid(a)`
+  - `a = sigmoid(z)`일 때 `a`를 미분한다.
+  - `def`
+
+  ```python
+  def diff_sigmoid(a):
+      return a * (1.0 - a)
+  ```
+
+#### softmax 함수
+
+$$
+  {Softmax}(Z) = \frac{1}{\sum}e^{z_i} \times
+  \begin{pmatrix}
+    e^{z_1} \\
+    e^{z_2} \\
+    \cdots
+  \end{pmatrix}
+$$
+
+- overflow 방지
+  - 이전 층의 벡터를 `Z`라고 할 때
+  - `softmax(z)`와 마찬가지로 $Z_i$의 값이 709를 넘어가게 되면 $e^{z_i}$는 overflow가 일어난다.
+  - overflow 방지를 위해 $Z_{max}$(Z의 최댓값)를 Z의 모든 원소에 대해 빼준다.
+  -
+    $$
+      Z_{stable} = Z - Z_{max}
+    $$
+  - $Z_{max}$를 빼주어도 `softmax`함수의 출력값은 바뀌지 않지만, overflow는 방지할 수 있다.
+
+$$
+\begin{align}
+ {Softmax}(Z - Z_{max})
+  &=
+  \frac{1}{\sum}e^{z_i - z_{max}} \times
+      \begin{pmatrix}
+        e^{z_1 - z_{max}} \\
+        e^{z_2 - z_{max}} \\
+        \cdots
+      \end{pmatrix} \\
+  &=
+  \frac{e^ {-z_{max}}}{e^ {-z_{max}}} \times
+  \frac{1}{\sum}e^{z_i} \times
+      \begin{pmatrix}
+        e^{z_1} \\
+        e^{z_2} \\
+        \cdots
+      \end{pmatrix}\\
+  &=
+    \frac{1}{\sum}e^{z_i} \times
+      \begin{pmatrix}
+        e^{z_1} \\
+        e^{z_2} \\
+        \cdots
+      \end{pmatrix}\\
+\end{align}
+$$
+
+- `softmax(z)`
+  - softmax 함수가 한 번에 여러 묶음의 데이터를 처리할 수 있도록 구현한다.
+  - `stable_z = z - np.max(z, axis = 1, keepdims = True)`
