@@ -36,13 +36,15 @@ x_test = x[60_000:]  # 테스트 x 데이터
 
 # 정답(label) 데이터 전처리
 
-y = mnist.target.astype(np.float32)  # y에 데이터 저장
+y = mnist.target.astype(np.int32)  # y에 데이터 저장
 classes_num = np.unique(y)  # [0. 1. 2. 3. 4. 5. 6. 7. 8. 9.]
 
 classes_num = len(classes_num)
 print(classes_num)
 
 y_train = y[:60_000]  # 학습 레이블
+print(y_train[1])
+
 y_test = y[60_000]  # 테스트 레이블
 
 # 원핫인코딩
