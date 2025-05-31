@@ -44,3 +44,11 @@ print(classes_num)
 
 y_train = y[:60_000]  # 학습 레이블
 y_test = y[60_000]  # 테스트 레이블
+
+# 원핫인코딩
+y_train = np.eye(classes_num)[y_train]
+y_test = np.eye(classes_num)[y_test]
+
+
+print(y_train[1])
+# 함구구현
