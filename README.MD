@@ -126,7 +126,7 @@
 #### softmax 함수
 
 $$
-  {Softmax}(Z) = \frac{1}{\sum}e^{z_i} \times
+  {Softmax}(Z) = \frac{1}{\sum e^{z_i}} \times
   \begin{pmatrix}
     e^{z_1} \\
     e^{z_2} \\
@@ -145,7 +145,7 @@ $$
 \begin{align}
  {Softmax}(Z - Z_{max})
   &=
-  \frac{1}{\sum}e^{z_i - z_{max}} \times
+  \frac{1}{\sum e^{z_i - z_{max}}} \times
       \begin{pmatrix}
         e^{z_1 - z_{max}} \\
         e^{z_2 - z_{max}} \\
@@ -153,14 +153,14 @@ $$
       \end{pmatrix} \\
   &=
   \frac{e^ {-z_{max}}}{e^ {-z_{max}}} \times
-  \frac{1}{\sum}e^{z_i} \times
+  \frac{1}{\sum e^{z_i}} \times
       \begin{pmatrix}
         e^{z_1} \\
         e^{z_2} \\
         \cdots
       \end{pmatrix}\\
   &=
-    \frac{1}{\sum}e^{z_i} \times
+    \frac{1}{\sum e^{z_i}} \times
       \begin{pmatrix}
         e^{z_1} \\
         e^{z_2} \\

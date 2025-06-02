@@ -24,33 +24,52 @@ mnist = fetch_openml(
 
 # x(input)데이터 전처리 및 저장
 x = mnist.data.astype(np.float32)
-
 # 데이터 정규화(min-max 정규화)
 x = x / 255.0
 
-
 # 학습 및 테스트 데이터 분리 저장
-x_train = x[:60_000]  # 학습 x 데이터
-x_test = x[60_000:]  # 테스트 x 데이터
+x_train = x[:60000]  # 학습 x 데이터
+x_test = x[60000:]  # 테스트 x 데이터
 
 
 # 정답(label) 데이터 전처리
 
 y = mnist.target.astype(np.int32)  # y에 데이터 저장
 classes_num = np.unique(y)  # [0. 1. 2. 3. 4. 5. 6. 7. 8. 9.]
-
 classes_num = len(classes_num)
-print(classes_num)
-
-y_train = y[:60_000]  # 학습 레이블
-print(y_train[1])
-
-y_test = y[60_000]  # 테스트 레이블
-
-# 원핫인코딩
-y_train = np.eye(classes_num)[y_train]
-y_test = np.eye(classes_num)[y_test]
+# 원 핫 인코딩
+y = np.eye(classes_num)[y]
+# 테스트/ 트레인 데이터 분리
+y_train = y[:60000]
+y_test = y[60000:]
+# 함수구현
 
 
-print(y_train[1])
-# 함구구현
+# 가중합 함수 구현
+def circulate_z(x, w, b):
+    return np.dot(x, w) + b
+
+
+# sigmoid 함수 구현
+def sigmoid(z):
+    arg = -1.0 * z
+    stable_arg = np.minimum(709.0, arg)
+    return 1.0 / (1.0 + np.exp(stable_arg))
+
+print('함수현이 최예진을 좋아할 확률?!' , sigmoid(6))
+
+# sigmoid 함수 미분 구현
+def diff_sigmoid(a):
+    return a * (1.0 - a)
+
+def softmax(z): 
+    stable_z = z - np.max(z, axis=1, keepdims=True)
+    exp_z = np.exp(stable_z)
+    return exp_z / sum(exp_z, axis=1, keepdims=True)
+
+
+
+
+# 손실함수(categorical_crossentropy)구현
+def categorical_crossentropy(y, y_hat):
+    return
