@@ -8,6 +8,8 @@
       - [sigmoid 함수](#sigmoid-함수)
       - [softmax 함수](#softmax-함수)
     - [순전파 (forward propagation)](#순전파-forward-propagation)
+      - [하이퍼 파라미터](#하이퍼-파라미터)
+      - [파라미터 정의하기](#파라미터-정의하기)
 
 ## 라이브러리 `import`
 
@@ -281,3 +283,41 @@ Z{}^{1}_{0} &= (W{}^{0}_{0})^T \cdot (A{}^{0}) + B{}^{0}_{0} \\
 
 \newline
 $$
+
+#### 하이퍼 파라미터
+
+```python
+num_classes     =   len(np.unique(y))
+
+# input layer
+x_shape         =   x_train.shape[1]
+
+# hidden layers
+hidden_1_units  =   256
+hidden_2_units  =   32
+
+# output layer
+output_units    =   num_classes
+```
+
+#### 파라미터 정의하기
+
+```python
+params = {}
+# 입력층 -> 은닉층1
+params["W1"] = xavier_weight(x_shape, hidden_1_units)
+params["B1"] = np.zeros((1, hidden_1_units))
+
+# 은닉층1 -> 은닉층2
+params["W2"] = xavier_weight(hidden_1_units, hidden_2_units)
+params["B2"] = np.zeros((1, hidden_2_units))
+
+# 은닉층2 -> 출력층
+params["W3"] = xavier_weight(hidden_2_units, num_classes)
+params["B3"] = np.zeros((1, num_classes))
+```
+
+```python
+Z1 = circulate_z(x, W1, B1)
+A1 = sigmoid(Z1)
+```
