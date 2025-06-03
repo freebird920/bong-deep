@@ -10,6 +10,7 @@
     - [순전파 (forward propagation)](#순전파-forward-propagation)
       - [하이퍼 파라미터](#하이퍼-파라미터)
       - [파라미터 정의하기](#파라미터-정의하기)
+      - [가중합과 활성화 함수](#가중합과-활성화-함수)
 
 ## 라이브러리 `import`
 
@@ -287,6 +288,8 @@ $$
 #### 하이퍼 파라미터
 
 ```python
+# 하이퍼 파라미터 정의
+
 num_classes     =   len(np.unique(y))
 
 # input layer
@@ -303,7 +306,9 @@ output_units    =   num_classes
 #### 파라미터 정의하기
 
 ```python
+# 파라미터 정의
 params = {}
+
 # 입력층 -> 은닉층1
 params["W1"] = xavier_weight(x_shape, hidden_1_units)
 params["B1"] = np.zeros((1, hidden_1_units))
@@ -314,8 +319,10 @@ params["B2"] = np.zeros((1, hidden_2_units))
 
 # 은닉층2 -> 출력층
 params["W3"] = xavier_weight(hidden_2_units, num_classes)
-params["B3"] = np.zeros((1, num_classes))
+params["B3"] = np.zeros((1, output_units))
 ```
+
+#### 가중합과 활성화 함수
 
 ```python
 Z1 = circulate_z(x, W1, B1)
