@@ -7,6 +7,7 @@
     - [활성화 함수](#활성화-함수)
       - [sigmoid 함수](#sigmoid-함수)
       - [softmax 함수](#softmax-함수)
+    - [순전파 (forward propagation)](#순전파-forward-propagation)
 
 ## 라이브러리 `import`
 
@@ -172,3 +173,111 @@ $$
 - `softmax(z)`
   - softmax 함수가 한 번에 여러 묶음의 데이터를 처리할 수 있도록 구현한다.
   - `stable_z = z - np.max(z, axis = 1, keepdims = True)`
+
+### 순전파 (forward propagation)
+
+입력(x)이 은닉층을 거쳐 예측 값($\hat{y}$)을 출력하는 과정을 **순전파**라고 한다.
+
+$$
+
+\newline
+
+\begin{align}
+  X = A{}^0 = \begin{pmatrix}
+      a^0_0     \\
+      a^0_1     \\
+      \cdots    \\
+      a^0_{784} \\
+    \end{pmatrix}
+\end{align}
+
+\newline
+
+\begin{align}
+  W{}_{0}^{0} = \begin{pmatrix}
+      w^{0}_{0 \, 0}     \\
+      w^{0}_{0 \, 1}     \\
+      \cdots    \\
+      w^0_{784} \\
+    \end{pmatrix}
+\end{align}
+
+\newline
+
+\begin{align}
+  B{}_{0}^{0} = \begin{pmatrix}
+      b^{0}_{0}     \\
+      b^{0}_{1}     \\
+      \cdots    \\
+      b^{0}_{784} \\
+    \end{pmatrix}
+\end{align}
+
+\newline
+
+\begin{align*}
+Z{}^{1}_{0} &= (W{}^{0}_{0})^T \cdot (A{}^{0}) + B{}^{0}_{0} \\
+  &=  \begin{pmatrix}
+        w{}^{0}_{0 \, 0}  &
+        w{}^{0}_{0 \, 1}  &
+        \cdots            &
+        w{}^0_{0 \, 784}
+      \end{pmatrix}  
+
+      \cdot
+
+      \begin{pmatrix}
+        a{}^{0}_{0}     \\
+        a{}^{0}_{1}     \\
+        \vdots          \\
+        a{}^{0}_{784}   \\
+      \end{pmatrix}
+      +
+      \begin{pmatrix}
+        b^{0}_{0}     \\
+        b^{0}_{1}     \\
+        \cdots    \\
+        b^{0}_{784} \\
+      \end{pmatrix}
+      \newline
+
+  &=  \left(
+        w^{0}_{0 \, 0}a{}^{0}_{0}   +
+        w^{0}_{0 \, 1}a{}^{0}_{1}   +
+        \cdots                      +
+        w^{0}_{0 \, 784}a{}^{0}_{784}
+      \right)
+      +
+      \left(
+        b^{0}_{0}   +
+        b^{0}_{1}   +
+        \cdots      +
+        b^{0}_{784}
+      \right)
+
+      \newline
+
+\end{align*}
+
+\newline
+
+\begin{align*}
+  A{}^{1}
+  &=
+  \begin{pmatrix}
+        sigmoid(z^{1}_{0})      \\
+        sigmoid(z^{1}_{1})      \\
+        \cdots        \\
+        sigmoid(z^{1}_{256})    \\
+  \end{pmatrix}                 \\
+  &=
+  \begin{pmatrix}
+      a^{1}_{0}      \\
+      a^{1}_{1}      \\
+      \cdots        \\
+      a^{1}_{256}    \\
+  \end{pmatrix}                 \\
+\end{align*}
+
+\newline
+$$
